@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    {% block body %}
+
+
+<style>
+  .nav-wrapper  a{
+    color: white;
+  }
+  .nav-wrapper{
+    padding:0px 80px 0px 80px;
+  }
+  #mess{
+    width: 25%;
+    position:fixed;
+    top:15%;
+    left:35%;
+  }
+</style>
+  <nav>
+    <div class="nav-wrapper black">
+      <a href="{% url 'main:home' %}" class="brand-logo white-text">
+        AsralkhanovShop
+      </a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down ">
+       {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}" class="white-text">E-mailni almashtirish</a></li>
+        <li><a href="{% url 'account_logout' %}" class="white-text">Chiqish</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}" class="white-text">Kirish</a></li>
+        <li><a href="{% url 'account_signup' %}" class="white-text">Akkaunt yaratish</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+
+      {% if messages %}
+      {% if messages.tags %}
+      {% for tag in messages.tags.all %}      
+        <div class="card-panel z-depth-3 {{tag}}" id="mess">
+          <a href="#" class="close btn pulse"
+             onclick="document.getElementById('mess').style='display:none;'">
+            <i class="material-icons">clear</i>
+          </a>
+                <div class="messages">
+                  <strong>Messages:</strong>
+                  <ul>
+                    {% for message in messages %}
+                    <li>{{message}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+            </div>
+        {% endfor %}
+      {% endif %}
+    {% endif %}
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+    
+    {% endblock %}
+    <div class="container">
+       {% block extra_body %}
+        {% endblock %}
+    </div>
+   
+  </body>
+</html>

@@ -1,0 +1,208 @@
+{% extends "wrapper.html" %}
+{% load static %}
+{% block content %}
+  
+
+    <!-- Single Product -->
+    <section class="section-wrap pb-20 product-single">
+      <div class="container">
+
+        <!-- Breadcrumbs -->
+        <ol class="breadcrumbs">
+          <li>
+            <a href="{% url 'main:home' %}">Bosh sahifa</a>
+          </li>
+          <li>
+            <a href="{% url 'main:category_detail' object.slug %}">{{object.category}}</a>
+          </li>
+          <li class="active">
+            {{object.name}}
+          </li>
+        </ol>
+
+        <div class="row">
+
+          <div class="col-md-6 product-slider mb-50">
+
+            <div class="flickity flickity-slider-wrap mfp-hover" id="gallery-main">
+              {% for obj_img in object.product_images.all %}
+              <div class="gallery-cell">
+                <a href="{{obj_img.image.url}}" class="lightbox-img">
+                  <img src="{{obj_img.image.url}}" alt="" />
+                </a>
+              </div>
+              {% endfor %}
+            </div> <!-- end gallery main -->
+
+            <div class="gallery-thumbs" id="gallery-thumbs">
+            {% for obj_img in object.product_images.all %}
+              <div class="gallery-cell">
+                <img src="{{obj_img.image.url}}" alt="" />
+              </div>
+            {% endfor %}
+            </div> <!-- end gallery thumbs -->
+          </div> <!-- end col img slider -->
+
+          <div class="col-md-6 product-single">
+            <h1 class="product-single__title uppercase">{{object.name}}</h1>
+
+            <span class="product-single__price">
+              <ins>
+                <span class="amount">${{object.price}}</span>
+              </ins>
+              <del>
+                <span>${{object.old_price}}</span>
+              </del>
+            </span>            
+
+            <div class="colors clearfix">
+              <span class="colors__label">Rangi: <span class="colors__label-selected">{{object.colors}}</span></span>
+              <a href="#" class="colors__item colors__item--selected {{object.colors}}"></a>
+              {% for color in object.other_colors.all %}
+              <a href="#" class="colors__item {{color}}"></a>  
+              {% endfor %}
+            </div>
+
+            <div class="size-quantity clearfix">
+              <div class="size">
+                <label>Razmer</label>
+                <select name="size" id="size__select" class="size__select">
+                  <option value="xs">XS</option>
+                  <option value="s">S</option>
+                  <option value="m">M</option>
+                  <option value="l">L</option>
+                  <option value="xl">XL</option>
+                </select>
+              </div>
+              
+              <div class="quantity">
+                <label>Soni</label>                 
+                <select name="quantity" id="product_qty" class="quantity__select">
+                  <option value="1">1 dona</option>
+                  <option value="2">2 dona</option>
+                  <option value="3">3 dona</option>
+                  <option value="4">4 dona</option>
+                  <option value="5">5 dona</option>
+                </select>
+              </div>
+            </div>            
+
+            <div class="row row-10 product-single__actions clearfix">
+              <div class="col">
+                <a href="#" onclick="AddToCart({{ object.id }})" class="btn btn-lg btn-color product-single__add-to-cart">
+                  <i class="ui-bag"></i>
+                  <span>Savatchaga qo'shish</span>
+                </a>
+              </div>
+              <div class="col">
+                <a href="{% url 'cart:cart' %}" class="btn btn-lg btn-dark product-single__add-to-wishlist">
+                  <i class="ui-bag"></i>
+                  <span>Savatchaga o'tish</span>
+                </a>
+              </div>
+            </div>            
+            <!-- Accordion -->
+            <div class="accordion mb-50" id="accordion">
+              <div class="accordion__panel">
+                <div class="accordion__heading" id="headingOne">
+                  <a data-toggle="collapse" href="#collapseOne" class="accordion__link accordion--is-open" aria-expanded="true" aria-controls="collapseOne">Tovar haqida<span class="accordion__toggle">&nbsp;</span>
+                  </a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion" role="tabpanel" aria-labelledby="headingOne">
+                  <div class="accordion__body">
+                   {{ object.description}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion__panel">
+                <div class="accordion__heading" id="headingTwo">
+                  <a data-toggle="collapse" href="#collapseTwo" class="accordion__link accordion--is-closed" aria-expanded="false" aria-controls="collapseTwo">Information<span class="accordion__toggle">&nbsp;</span>
+                  </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="accordion__body">
+                    <table class="table shop_attributes">
+                      <tbody>
+                        <tr>
+                          <th>Kategoriya:</th>
+                          <td>{{object.category}}</td>
+                        </tr>
+                        <tr>
+                          <th>Omborda:</th>
+                          <td>{% if object.instock %}<strong>BOR</strong>{% else %}
+                            <strong>YO'Q</strong>
+                          {% endif %}</td>
+                        </tr>
+                        <tr>
+                          <th>Soni:</th>
+                          <td>{{object.count}}</td>
+                        </tr>                                     
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end accordion -->
+
+          </div> <!-- end col product description -->
+        </div> <!-- end row -->
+       
+      </div> <!-- end container -->
+    </section> <!-- end single product -->
+
+
+    <!-- Related Products -->
+    <section class="section-wrap pt-0 pb-40">
+      <div class="container">
+
+        <div class="heading-row">
+          <div class="text-center">
+            <h2 class="heading bottom-line">
+             Boshqa Tovarlar
+            </h2>
+          </div>
+        </div>
+
+          <div class="row row-8">
+          {% for post in posts %}
+          <div class="col-lg-2 col-sm-4 product">
+            <div class="product__img-holder">
+              <a href="{% url 'main:detail' post.slug %}" class="product__link" aria-label="Product">
+                <img src="{{post.image.url}}" alt="" class="product__img">
+              </a>
+              <div class="product__actions">
+                <a href="quickview.html" class="product__quickview">
+                  <i class="ui-eye"></i>
+                  <span>{{post.views}}</span>
+                </a>
+                <a href="#" onclick="AddToCart({{ object.id }})" class="product__add-to-wishlist">
+                  <i class="ui-heart"></i>
+                  <span>Savatchaga qo'shish</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="product__details">
+              <h3 class="product__title">
+                <a href="{% url 'main:detail' post.slug %}">{{post.name}}</a>
+              </h3>
+            </div>
+
+           <span class="product__price">
+              <ins>
+                <span class="amount">${{post.price}}</span>
+              </ins>
+              <del>
+                <span>${{post.old_price}}</span>
+              </del>
+            </span>
+          </div> <!-- end product -->
+        {% endfor %}
+        </div> <!-- end row -->
+    
+        </div> <!-- end row -->
+      </div> <!-- end container -->
+    </section> <!-- end related products -->
+
+  {% endblock  %}

@@ -1,0 +1,273 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Asralkhanov | Shop</title>
+
+  <meta charset="utf-8">
+  <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+
+  <!-- Google Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Questrial:400%7CMontserrat:300,400,700,700i' rel='stylesheet'>
+
+  <!-- Css -->
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/css/font-icons.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/color.css" />
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="/static/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/static/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/static/img/apple-touch-icon-114x114.png">
+
+</head>
+
+<script>
+  if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+  }
+</script>
+
+<body>
+
+  <!-- Preloader -->
+  <div class="loader-mask">
+    <div class="loader">
+      <div></div>
+    </div>
+  </div>
+  
+
+  <!-- Mobile Sidenav -->    
+  <header class="sidenav" id="sidenav">
+    <!-- Search -->
+    <div class="sidenav__search-mobile">
+      <form method="get" class="sidenav__search-mobile-form">
+        <input type="search" class="sidenav__search-mobile-input" placeholder="Search..." aria-label="Search input">
+        <button type="submit" class="sidenav__search-mobile-submit" aria-label="Submit search">
+          <i class="ui-search"></i>
+        </button>
+      </form>
+    </div>
+
+    <nav>
+      <ul class="sidenav__menu" role="menubar">
+        {% for category in categories %}
+        <li>
+          <a href="{% url 'main:category_detail' category.slug %}" class="sidenav__menu-link">{{category.name}}</a>
+        </li>
+        {% endfor %}
+        <li>
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'account_logout' %}" class="sidenav__menu-link">Ciqish</a>
+          {% else %}
+          <a href="{% url 'account_login' %}" class="sidenav__menu-link">Kirish</a>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+  </header> <!-- end mobile sidenav -->
+
+
+  <main class="main oh" id="main">
+
+    <!-- Navigation -->
+    <header class="nav">
+
+      <div class="nav__holder nav--sticky">
+        <div class="container relative">
+
+          <!-- Top Bar -->
+          <div class="top-bar d-none d-lg-flex">
+
+            <!-- Currency / Language -->
+            <ul class="top-bar__currency-language">
+              <li class="top-bar__language">
+                <a href="#">Uzbek</a>
+              </li>
+              <li class="top-bar__currency">
+                <a href="#">USD</a>
+              </li>              
+            </ul>
+
+            <!-- Promo -->
+
+            <!-- Sign in / Wishlist / Cart -->
+            <div class="top-bar__right">
+
+              <!-- Sign In -->
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'account_logout' %}" class="top-bar__item" > <i class="fas fa-user"></i> {{request.user.username}}</a>
+          <a href="{% url 'account_logout' %}" class="top-bar__item" ><i class="fas fa-sign-in-alt"></i>Chiqish</a>
+          {% else %}
+          <a href="{% url 'account_login' %}" class="top-bar__item "><i class="ui-user"></i>Kirish</a>
+          {% endif %}
+
+              <div class="top-bar__item nav-cart">                
+                <a href="{% url 'cart:cart' %}">
+                  <i class="ui-bag"></i>
+                  {% if cart.products%}
+                    <span class="nav-link-notification-number">
+                        {{ cart.products.count }}
+                    </span>
+                {% else %}
+                     <span class="nav-link-notification-number">
+                        0
+                    </span>
+                {% endif %}
+                </a>
+                <div class="nav-cart__dropdown">
+                  <div class="nav-cart__items">
+                    {% for item in cart.products.all %}                   
+                    <div class="nav-cart__item clearfix">
+                      <div class="nav-cart__img">
+                        <a href="{% url 'main:detail' item.product.slug %}">
+                          <img src="{{item.product.image.url}}" alt="">
+                        </a>
+                      </div>
+                      <div class="nav-cart__title">
+                        <a href="{% url 'main:detail' item.product.slug %}">
+                         {{item.product.name}}
+                        </a>
+                        <div class="nav-cart__price">
+                          <span>{{item.quantity}} x</span>
+                          <span>${{item.product.price}}</span>
+                        </div>
+                      </div>
+                      <div class="nav-cart__remove">
+                        <a href="{% url 'cart:remove' %}"><i class="ui-close"></i></a>
+                      </div>
+                    </div>
+                     {% endfor %}
+                
+                  </div> <!-- end cart items -->
+                  <div class="nav-cart__actions mt-20">
+                    <a href="{% url 'cart:cart' %}" class="btn btn-md btn-light"><span>Savatchaga o'tish</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div> <!-- end top bar -->
+
+          <div class="flex-parent">
+
+            <!-- Mobile Menu Button -->
+            <button class="nav-icon-toggle" id="nav-icon-toggle">
+              <span class="nav-icon-toggle__box">
+                <span class="nav-icon-toggle__inner"></span>
+              </span>
+            </button> <!-- end mobile menu button -->
+
+            <!-- Logo -->
+            <a href="{% url 'main:home' %}" class="logo">
+              <span style="color: white;">AsralkhanovShop</span>
+            </a>
+
+            <!-- Nav-wrap -->
+            <nav class="flex-child nav__wrap d-none d-lg-block">              
+              <ul class="nav__menu">
+                {% for category in categories %}
+                <li class="nav__dropdown active">
+                  <a href="{% url 'main:category_detail' category.slug %}">{{category.name}}</a>
+                </li>
+                {% endfor %}
+              </ul> <!-- end menu -->
+
+            </nav> <!-- end nav-wrap -->
+
+
+            <!-- Search -->
+            <div class="flex-child nav__search d-none d-lg-block">
+              <form id="search_form" name="gs" method="GET" action="{% url 'main:searchs' %}" class="nav__search-form">
+                <input type="text" name="query" class="nav__search-input" placeholder="Qidirish...." autocomplete="on">
+                  <i class="ui-search"></i>                
+              </form>
+            </div>
+
+
+            <!-- Mobile Wishlist -->
+            <a href="#" class="nav__mobile-wishlist d-lg-none">
+              <i class="ui-heart"></i>
+            </a>
+
+            <!-- Mobile Cart -->
+            <a href="cart.html" class="nav__mobile-cart d-lg-none">
+              <i class="ui-bag"></i>
+              <span class="nav__mobile-cart-amount">(2)</span>
+            </a>
+        
+          </div> <!-- end flex-parent -->
+        </div> <!-- end container -->
+
+      </div>
+    </header> <!-- end navigation -->
+
+
+
+{% block content %}
+{% endblock %}
+
+
+
+
+ <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__widgets">
+          <div class="row">
+
+            <div class="col-lg-2 col-md-6">
+              <div class="widget widget_nav_menu">
+                <h4 class="widget-title white">AsralkhanovShop</h4>
+                <ul>
+                  {% for category in  categories %}
+                  <li><a href="{% url 'main:category_detail' category.slug %}">{{category.name}}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>    
+      </div> <!-- end container -->
+
+      <div class="footer__bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 text-sm-center">
+              <span class="copyright">
+                &copy; 2021 AsralkhanovShop <a href="#">Asralkhanov</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end bottom footer -->
+    </footer> <!-- end footer -->
+
+    <div id="back-to-top">
+      <a href="#top"><i class="ui-arrow-up"></i></a>
+    </div>
+
+  </main> <!-- end main-wrapper -->
+
+
+  
+  <!-- jQuery Scripts -->
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/js/easing.min.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.magnific-popup.min.js"></script>
+  <script type="text/javascript" src="/static/js/owl-carousel.min.js"></script>  
+  <script type="text/javascript" src="/static/js/flickity.pkgd.min.js"></script>
+  <script type="text/javascript" src="/static/js/modernizr.min.js"></script>
+  <script type="text/javascript" src="/static/js/scripts.js"></script>
+  <script type="text/javascript" src="/static/cart.js"></script>
+
+</body>
+</html>

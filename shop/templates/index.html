@@ -1,0 +1,146 @@
+{% extends "wrapper.html" %}
+{% load static %}
+{% block content %}
+  
+
+    <!-- Hero Slider -->
+    <section class="hero">
+      {% for post in posts %}    
+      <div id="owl-hero" class="owl-carousel owl-theme owl-carousel--dots-inside"> 
+        <div class="hero__slide" style="background-image: url({{post.image.url}})">    
+        </div>
+      </div> <!-- end owl -->
+      {% endfor %}       
+    </section> <!-- end hero slider -->
+
+    <!-- Feature -->
+    <section class="section-wrap pb-0">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-3 feature">
+            <i class="ui-cube feature__icon"></i>
+            <div class="feature__holder">
+              <h6 class="feature__title">Bepul Yetkazib berish</h6>
+              <span class="feature__text">O'zbekiston bo'ylab yetkazib berish bepul</span>
+            </div>            
+          </div>
+          <div class="col-md-3 feature">
+            <i class="ui-plane feature__icon"></i>
+            <div class="feature__holder">
+              <h6 class="feature__title">Tezkor Yetkazib berish</h6>
+              <span class="feature__text">Buyurtmangizni 10-kun ichida yetkazib berish</span>
+            </div>
+          </div>
+          <div class="col-md-3 feature">
+            <i class="ui-pricetag feature__icon"></i>
+            <div class="feature__holder">
+              <h6 class="feature__title"><span class="feature__promo">50% Chegirma</span>barcha tovarlarga</h6>
+              <span class="feature__text">Promocode:shop50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>    
+
+    <!-- Best Seller -->
+    <section class="section-wrap pb-30">
+      <div class="container">
+
+        <div class="heading-row">
+          <div class="text-center">
+            <h2 class="heading bottom-line">
+              Yangi Tovarlar
+            </h2>
+          </div>
+        </div>
+        <div class="row row-8">
+        {% for product in object_list %} 
+          <div class="col-lg-2 col-sm-4 product">
+            <div class="product__img-holder">
+              <a href="{% url 'main:detail' product.slug %}" class="product__link" aria-label="Product">
+                <img src="{{product.image.url}}" alt="" class="product__img">
+              </a>
+              <div class="product__actions">
+                <a href="#" class="product__quickview">
+                  <i class="ui-eye"></i>
+                  <span>{{product.views}}</span>
+                </a>
+                <a href="{% url 'main:detail' product.slug %}"class="product__add-to-wishlist">
+                  <i class="ui-bag"></i>
+                  <span>Savatchaga qo'shish</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="product__details">
+              <h3 class="product__title">
+                <a href="{% url 'main:detail' product.slug %}">{{product.name}}</a>
+              </h3>
+            </div>
+
+            <span class="product__price">
+              <ins>
+                <span class="amount">${{product.price}}</span>
+              </ins>
+              <del>
+                <span>${{product.old_price}}</span>
+              </del>
+            </span>
+          </div> <!-- end product -->
+        {% endfor %}
+
+        </div> <!-- end row -->
+      </div> <!-- end container -->
+    </section> <!-- end best seller -->
+
+    <!-- New Arrivals -->
+    <section class="section-wrap no-padding">
+      <div class="container">
+
+        <div class="heading-row">
+          <div class="text-center">
+            <h2 class="heading bottom-line">
+              Boshqa Tovarlar
+            </h2>
+          </div>
+        </div>
+
+        <div class="row row-8">
+          {% for post in posts %}
+          <div class="col-lg-2 col-sm-4 product">
+            <div class="product__img-holder">
+              <a href="{% url 'main:detail' post.slug %}" class="product__link" aria-label="Product">
+                <img src="{{post.image.url}}" alt="" class="product__img">
+              </a>
+              <div class="product__actions">
+                <a href="quickview.html" class="product__quickview">
+                  <i class="ui-eye"></i>
+                  <span>{{post.views}}</span>
+                </a>
+                <a href="{% url 'main:detail' post.slug %}" class="product__add-to-wishlist">
+                  <i class="ui-bag"></i>
+                  <span>Savatchaga qo'shish</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="product__details">
+              <h3 class="product__title">
+                <a href="{% url 'main:detail' post.slug %}">{{post.name}}</a>
+              </h3>
+            </div>
+
+           <span class="product__price">
+              <ins>
+                <span class="amount">${{post.price}}</span>
+              </ins>
+              <del>
+                <span>${{post.old_price}}</span>
+              </del>
+            </span>
+          </div> <!-- end product -->
+        {% endfor %}
+        </div> <!-- end row -->
+      </div> <!-- end container -->
+    </section> <!-- end new arrivals -->
+{% endblock  %}

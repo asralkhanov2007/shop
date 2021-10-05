@@ -1,0 +1,70 @@
+{% extends "wrapper.html" %}
+{% load static %}
+{% block content %}
+
+    <section class="section-wrap pb-20 product-single">
+      <div class="container">
+
+        <!-- Breadcrumbs -->
+      
+        <ol class="breadcrumbs">
+          <li>
+            <a href="{% url 'main:home' %}"><b>Bosh sahifa</b></a>
+          </li>
+    
+        </ol>
+        
+       
+      </div> <!-- end container -->
+    </section> <!-- end single product -->
+<br><br><br><br>
+<section class="section-wrap no-padding">
+      <div class="container">
+        <div class="heading-row">
+          <div class="text-center">
+            <h2 class="heading bottom-line">
+              Qidiruv natijasi
+            </h2>
+          </div>
+        </div>
+
+        <div class="row row-8">
+          {% for post in posts %}
+          <div class="col-lg-2 col-sm-4 product">
+            <div class="product__img-holder">
+              <a href="{% url 'main:detail' post.slug %}" class="product__link" aria-label="Product">
+                <img src="{{post.image.url}}" alt="" class="product__img">
+              </a>
+              <div class="product__actions">
+                <a href="quickview.html" class="product__quickview">
+                  <i class="ui-eye"></i>
+                  <span>{{post.views}}</span>
+                </a>
+                <a href="{% url 'main:detail' post.slug %}"  class="product__add-to-wishlist">
+                  <i class="ui-bag"></i>
+                  <span>Savatchaga qo'shish</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="product__details">
+              <h3 class="product__title">
+                <a href="{% url 'main:detail' post.slug %}">{{post.name}}</a>
+              </h3>
+            </div>
+
+           <span class="product__price">
+              <ins>
+                <span class="amount">${{post.price}}</span>
+              </ins>
+              <del>
+                <span>${{post.old_price}}</span>
+              </del>
+            </span>
+          </div> <!-- end product -->
+        {% endfor %}
+        </div> <!-- end row -->
+      </div> <!-- end container -->
+    </section> <!-- end new arrivals -->
+
+{% endblock  %}

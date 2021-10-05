@@ -1,0 +1,124 @@
+{% extends "wrapper.html" %}
+{% load static %}
+{% block content %}
+  
+
+    <!-- Page Title -->
+    <section class="page-title text-center">
+      <div class="container">
+        <h1 class=" heading page-title__title">Savatcha</h1>
+      </div>
+    </section> <!-- end page title -->
+
+
+    <!-- Cart -->
+    <section class="section-wrap cart pt-50 pb-40">
+      <div class="container relative">
+        {% if not cart.products %} 
+        <div class="alert alert-danger m-5 w-5">
+          <h1 align="center">Tovarlar topilmadi !</h1>
+        </div>
+        {% endif %}
+        <div class="table-wrap">
+          <table class="shop_table cart table">
+            <thead>
+              <tr>
+                <th class="product-name" colspan="2">Tovar</th>
+                <th class="product-price">Tovar narxi</th>
+                <th class="product-quantity">Tovar soni</th>
+                <th class="product-subtotal" colspan="2">Umumiy narxi</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="cart_item">
+              {% for product in cart.products.all %}
+                {% with product as item %}
+                <td class="product-thumbnail">
+                  <a href="#">
+                    <img src="{{item.product.image.url}}" alt="">
+                  </a>
+                </td>
+                <td class="product-name">
+                  <a href="{% url 'main:detail' product.id %}">{{item.product.name}}</a>
+                </td>
+                <td class="product-price">
+                  <span class="amount">$<strong>{{item.product.price}}</strong></span>
+                </td>
+                <td class="product-quantity">
+                 <span class="amount">{{item.quantity}}</span>
+                </td>
+                <td class="product-subtotal">
+                  <span class="amount">$<strong>{{cart.total_price}}</strong></span>
+                </td>
+                <td class="product-remove">
+                  <a href="{% url 'cart:delete' item.product.id item.quantity %}" class="remove" title="Remove this item">
+                    <i class="ui-close"></i>
+                  </a>
+                </td>
+              </tr>
+                {% endwith %}
+          {% endfor %}
+               <tfoot  >
+                       <tr>
+                         <td>
+                              <a href="{% url 'cart:remove'  %}" class="btn btn-danger m-2">
+                                  <i data-feather="trash-2"></i>
+                                  Savatchani tozalash
+                              </a>
+                         </td>
+                     </tr>
+                  </tfoot>
+
+        
+            </tbody>
+          </table>
+        </div>
+          <div class="row">
+                <div class="col-md-6">
+                    <div class="container">
+                    <div class="card p-5">
+                        <div class="mt-2 alert alert-danger">
+                            <h4>Barcha tovarlar :
+                                {% if cart.total_quantity %}
+                                <strong>{{ cart.total_quantity }}</strong>
+                                {% else %}
+                                    <strong>0</strong>
+                                {% endif %}
+
+                                ta</h4>
+                      
+                        <div class="mt-2 alert alert-danger">
+                            <h4>Umumiy summa : $
+                                {% if cart.total_price  %}
+                                 <strong>{{ cart.total_price }}</strong>
+                                {% else %}
+                                     <strong>0</strong>
+                                {% endif %}
+
+                            </h4>
+                              </div>
+                            <div class="alert alert-danger">
+                              <h2>Cart total card</h2>
+                        {% if cart %}
+                        <h4>{{ cart }}</h4>
+                        {% endif %}
+                        {% if cart.products %}
+                        <a href="{% url 'cart:add_order' cart.id %}" class="btn btn-outline-success">
+                            Buyurtma
+                        </a>
+                        {% endif %}
+                          
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+           
+            </div>
+
+        
+      </div> <!-- end container -->
+    </section> <!-- end cart -->
+
+{% endblock  %}
