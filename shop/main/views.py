@@ -39,4 +39,7 @@ def searchResults(request):
 
     return render(request,'results.html',{'posts':posts})
 
+def entry_not_found(request, exception=None):
+    return render(request, '404.html')
+
 

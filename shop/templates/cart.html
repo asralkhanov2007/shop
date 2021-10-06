@@ -49,7 +49,7 @@
                  <span class="amount">{{item.quantity}}</span>
                 </td>
                 <td class="product-subtotal">
-                  <span class="amount">$<strong>{{cart.total_price}}</strong></span>
+                  <span class="amount">$<strong>{{item.price}}</strong></span>
                 </td>
                 <td class="product-remove">
                   <a href="{% url 'cart:delete' item.product.id item.quantity %}" class="remove" title="Remove this item">
@@ -62,10 +62,12 @@
                <tfoot  >
                        <tr>
                          <td>
-                              <a href="{% url 'cart:remove'  %}" class="btn btn-danger m-2">
-                                  <i data-feather="trash-2"></i>
-                                  Savatchani tozalash
+                              <button style="background-color: red; border-radius: 50px;">
+                              <a href="{% url 'cart:remove'  %}" style="color: white;" >
+                                  <b>Savatchani tozalash</b>
+                                  <i class="fas fa-trash"></i>
                               </a>
+                              </button>
                          </td>
                      </tr>
                   </tfoot>
@@ -97,19 +99,14 @@
                                 {% endif %}
 
                             </h4>
-                              </div>
-                            <div class="alert alert-danger">
-                              <h2>Cart total card</h2>
-                        {% if cart %}
-                        <h4>{{ cart }}</h4>
-                        {% endif %}
                         {% if cart.products %}
-                        <a href="{% url 'cart:add_order' cart.id %}" class="btn btn-outline-success">
-                            Buyurtma
+                        <button style="background-color: black; border-radius: 10px;">
+                        <a href="{% url 'cart:add_order' cart.id %}" style="color:white;">
+                            <b>Buyurtma</b>
                         </a>
+                        </button>
                         {% endif %}
-                          
-                            </div>
+                              </div>
                         </div>
                         </div>
                     </div>
