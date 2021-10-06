@@ -13,7 +13,7 @@
             <a href="{% url 'main:home' %}">Bosh sahifa</a>
           </li>
           <li>
-            <a href="{% url 'main:category_detail' object.slug %}">{{object.category}}</a>
+            <a href="{% url 'main:category_detail' object.category.slug %}">{{object.category}}</a>
           </li>
           <li class="active">
             {{object.name}}
